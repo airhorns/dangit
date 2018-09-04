@@ -33,4 +33,10 @@ $ webpack
 ```
 to bundle a new version of the client side code.
 
+Run
+```
+$ python manage.py createsuperuser
+```
+to get an admin super user you can use to access the Django admin interface for your development environment.
+
 Run `bin/autolint` to automatically lint and conform all code to PEP8/ES6 standards via `autopep8` and `tslint`
