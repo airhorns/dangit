@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -ex
+autopep8 --in-place --aggressive --aggressive **/*
+node_modules/.bin/tslint --fix --project .

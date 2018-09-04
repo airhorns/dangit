@@ -1,0 +1,15 @@
+{
+  "name": "dangit",
+  "version": "0.1.0",
+  "description": "Minesweeper clone on the web",
+  "main": "index.js",
+  "repository": "https://github.com/airhorns/dangit.git",
+  "author": "Harry Brundage <harry.brundage@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.17.2",
+    "webpack-bundle-tracker": "^0.3.0"
+  }
+}
