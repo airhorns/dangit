@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es2017", "dom", "esnext"],
+    "module": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "target": "es6",
+    "jsx": "react",
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "strict": true,
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "compileOnSave": false
+}

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -ex
-autopep8 --in-place --aggressive --aggressive **/*
+autopep8 --in-place --aggressive --aggressive **/*.py
 node_modules/.bin/tslint --fix --project .
