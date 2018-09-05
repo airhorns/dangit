@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import User
 from django.utils.text import capfirst
 from .game_types import GAME_TYPES
@@ -9,11 +10,11 @@ class GameState(models.Model):
     open = models.BooleanField(default=True)
     won = models.BooleanField(null=True)
 
-    minemap = models.TextField(max_length=10000)
+    minemap = ArrayField(base_field=models.IntegerField())
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True)
 
     owning_player = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.slug
+        return str(self.id)
