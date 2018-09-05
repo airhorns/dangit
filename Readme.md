@@ -7,7 +7,7 @@ Minesweeper clone for fun, and to demonstrate React & Django proficiency!
 - Install system dependencies:  `chromedriver` and `python` version 3.6.
 - Run
 ```
-$ pip install -r dev_requirements.txt && yarn
+$ pipenv install && yarn
 ```
 to install the python dependencies for the application.
 - Run
