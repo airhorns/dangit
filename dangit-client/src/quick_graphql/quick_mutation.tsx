@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Mutation, MutationProps, MutationFn, MutationResult } from "react-apollo";
+import { Error } from "../dangit/error";
 
 export interface IQuickMutationProps extends MutationProps {
   children: (mutate: MutationFn, data?: any) => React.ReactNode | null;
@@ -18,8 +19,9 @@ export class QuickMutation extends React.Component<IQuickMutationProps, {}> {
         return "Loading...";
       }
       if (result.error) {
-        return "There was an error, please try again by refreshing your browser.";
+        return <Error text="There was an error communicating with the server."/>;
       }
+
       return children(mutate, result.data);
     };
 

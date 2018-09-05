@@ -5,11 +5,15 @@ import { QuickMutation } from "../../quick_graphql";
 import DocumentTitle from "react-document-title";
 import { Section, Container, Heading, Tile } from "react-bulma-components";
 import { GameTypeTile } from "./game_type_tile";
+import { Error } from "../error";
 
 const START_GAME = gql`
   mutation startGame($gameType: String!) {
     startGame(gameType: $gameType) {
-      id
+      ok
+      gameState {
+        id
+      }
     }
   }
 `;
@@ -42,7 +46,11 @@ export class NewGameMenu extends React.Component<{}, {}> {
         <QuickMutation mutation={START_GAME}>
           {(startGame, data?) => {
             if (data) {
-              return <Redirect to={`/game/${data.gameId}`}/>;
+              if (data.startGame.ok) {
+                return <Redirect to={`/game/${data.startGame.gameState.id}`}/>;
+              } else {
+                return <Error text="We're unable to start new games right now."/>;
+              }
             }
 
             const gameTiles = GAME_TYPES.map(({name, description, color}) => {
