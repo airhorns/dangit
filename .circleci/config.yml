@@ -6,6 +6,10 @@ jobs:
       - image: circleci/python:3.6-node-browsers
         environment:
           PIPENV_VENV_IN_PROJECT: true
+      - image: circleci/postgres:9.6.2
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: dangit
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
@@ -27,6 +31,9 @@ jobs:
       - run:
           command: |
             node_modules/.bin/webpack
+      - run:
+          command: |
+            pipenv run python manage.py migrate
       - run:
           command: |
             pipenv run python manage.py test
