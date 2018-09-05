@@ -138,5 +138,5 @@ WEBPACK_LOADER = {
 }
 
 GRAPHENE = {
-    'SCHEMA': 'app.schema.schema'
+    'SCHEMA': 'dangit.schema.schema'
 }

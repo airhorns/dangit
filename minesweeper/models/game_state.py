@@ -13,7 +13,7 @@ class GameState(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True)
 
-    owning_player = models.ForeignKey(User, on_delete=models.CASCADE)
+    owning_player = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.slug
