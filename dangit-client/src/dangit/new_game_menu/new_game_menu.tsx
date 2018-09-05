@@ -1,7 +1,18 @@
 import * as React from "react";
+import gql from "graphql-tag";
+import { Redirect } from "react-router-dom";
+import { QuickMutation } from "../../quick_graphql";
 import DocumentTitle from "react-document-title";
 import { Section, Container, Heading, Tile } from "react-bulma-components";
 import { GameTypeTile } from "./game_type_tile";
+
+const START_GAME = gql`
+  mutation startGame($gameType: String!) {
+    startGame(gameType: $gameType) {
+      id
+    }
+  }
+`;
 
 const GAME_TYPES = [
   {
@@ -24,28 +35,34 @@ const capitalizeFirstLetter = (str: string) => {
 };
 
 export class NewGameMenu extends React.Component<{}, {}> {
-  public startGame(gameType: string) {
-
-  }
-
   public render() {
-    const gameTiles = GAME_TYPES.map(({name, description, color}) => {
-      return <GameTypeTile
-        title={capitalizeFirstLetter(name)}
-        key={name}
-        color={color}
-        description={description}
-        startCallback={(_) => this.startGame(name)}
-      />
-    });
-
     return <DocumentTitle title="Dangit! New Game">
       <Section>
       <Container>
-        <Heading>New Game Time!</Heading>
-        <Tile kind="ancestor">
-          {gameTiles}
-        </Tile>
+        <QuickMutation mutation={START_GAME}>
+          {(startGame, data?) => {
+            if (data) {
+              return <Redirect to={`/game/${data.gameId}`}/>;
+            }
+
+            const gameTiles = GAME_TYPES.map(({name, description, color}) => {
+              return <GameTypeTile
+                title={capitalizeFirstLetter(name)}
+                key={name}
+                color={color}
+                description={description}
+                startCallback={(_) => startGame({variables: {gameType: name}})}
+              />;
+            });
+
+            return <React.Fragment>
+              <Heading>New Game Time!</Heading>
+              <Tile kind="ancestor">
+                {gameTiles}
+              </Tile>
+            </React.Fragment>;
+          }}
+        </QuickMutation>
       </Container>
     </Section>
   </DocumentTitle>;

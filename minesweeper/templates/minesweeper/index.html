@@ -1,1 +1,4 @@
 {% extends "minesweeper/base.html" %}
+{% block content %}
+{% csrf_token %}
+{% endblock %}
