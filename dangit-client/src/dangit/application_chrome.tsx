@@ -23,9 +23,7 @@ export class ApplicationChrome extends React.Component<{}, {}> {
           </div>
         </div>
       </nav>
-      <div className="container">
-        {this.props.children}
-      </div>
+      {this.props.children}
       <footer className="footer">
         <div className="content has-text-centered">
           <p>

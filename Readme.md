@@ -29,7 +29,7 @@ to run the Django development server.
 
 Run
 ```
-$ webpack
+$ webpack  # add the --watch flag for automatic rebuilds
 ```
 to bundle a new version of the client side code.
 

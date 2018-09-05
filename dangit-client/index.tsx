@@ -1,4 +1,5 @@
-import "bulma/css/bulma.css";
+import "react-bulma-components/dist/react-bulma-components.min.css";
+import "@fortawesome/fontawesome-free/js/all.js";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Root } from "./src/dangit";
