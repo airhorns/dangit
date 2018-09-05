@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as Cookies from "js-cookie";
 import DocumentTitle from "react-document-title";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ApplicationChrome } from "./application_chrome";
@@ -33,7 +34,7 @@ const client = new ApolloClient({
       uri: "/graphql",
       credentials: "same-origin",
       headers: {
-          "X-CSRF-Token": csrfToken,
+          "X-CSRFToken": Cookies.get("csrftoken"),
       },
     }),
   ]),
