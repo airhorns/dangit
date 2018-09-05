@@ -1,4 +1,5 @@
 import * as React from "react";
+import DocumentTitle from "react-document-title";
 import { Section, Container, Heading, Tile } from "react-bulma-components";
 import { GameTypeTile } from "./game_type_tile";
 
@@ -31,19 +32,22 @@ export class NewGameMenu extends React.Component<{}, {}> {
     const gameTiles = GAME_TYPES.map(({name, description, color}) => {
       return <GameTypeTile
         title={capitalizeFirstLetter(name)}
+        key={name}
         color={color}
         description={description}
         startCallback={(_) => this.startGame(name)}
       />
     });
 
-    return <Section>
+    return <DocumentTitle title="Dangit! New Game">
+      <Section>
       <Container>
         <Heading>New Game Time!</Heading>
         <Tile kind="ancestor">
           {gameTiles}
         </Tile>
       </Container>
-    </Section>;
+    </Section>
+  </DocumentTitle>;
   }
 }

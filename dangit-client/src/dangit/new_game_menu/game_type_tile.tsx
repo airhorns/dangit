@@ -16,7 +16,7 @@ export class GameTypeTile extends React.Component<IGameTypeTileProps> {
         <p className="title">{this.props.title}</p>
         <p>{this.props.description}</p>
         <p>
-          <Button onclick={this.props.startCallback}><Icon icon=" fas fa-bomb"/><span>Start</span></Button>
+          <Button onClick={this.props.startCallback}><Icon icon=" fas fa-bomb"/><span>Start</span></Button>
         </p>
       </Tile>
     </Tile>;

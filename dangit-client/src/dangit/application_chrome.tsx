@@ -5,8 +5,8 @@ export class ApplicationChrome extends React.Component<{}, {}> {
     return <React.Fragment>
       <nav className="navbar is-danger">
         <div className="navbar-brand">
-          <a className="navbar-item" href="/">
-              <img src="/static/images/dangit-logo-white.svg" alt="Dangit: try not to blow up!" />
+          <a className="navbar-item" href="/" id="home">
+            <img src="/static/images/dangit-logo-white.svg" alt="Dangit: try not to blow up!" />
           </a>
         </div>
 

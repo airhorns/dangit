@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { Section, Container, Heading, Button, Icon, Level } from "react-bulma-components";
 
 export class Home extends React.Component<{}, {}> {
@@ -10,7 +11,7 @@ export class Home extends React.Component<{}, {}> {
         <Level>
           <Level.Side>
             <Level.Item>
-              <Button size="large" color="success">
+              <Button renderAs={Link} size="large" color="success" to="/new">
                 <Icon icon=" fas fa-plus" />
                 <span>New Game</span>
               </Button>
