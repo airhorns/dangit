@@ -1,0 +1,20 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$120000$x0IqmPFhoOHq$VuqfmeEzvBadynvwAvpd4HslG8KkKeOSCb1P2mXSyks=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@dangit.ca",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2018-09-05T15:43:33.864Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
