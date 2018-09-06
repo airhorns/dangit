@@ -1,0 +1,14 @@
+.minefield-cell {
+  display: flex;
+  flex-basis: 1;
+  width: 30vw;
+  height: 30vw;
+  max-width: 50px;
+  max-height: 50px;
+  border: 1px solid #EEE;
+}
+
+.minefield-row {
+  width: 100%;
+  display: flex;
+}
