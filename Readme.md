@@ -1,6 +1,6 @@
 # Dangit
 
-Minesweeper clone for fun, and to demonstrate React & Django proficiency!
+Minesweeper clone for fun, and to demonstrate React & Django proficiency! [![CircleCI](https://circleci.com/gh/airhorns/dangit.svg?style=svg)](https://circleci.com/gh/airhorns/dangit)
 
 ### Using the app
 
