@@ -1,8 +1,8 @@
 from django.test import TestCase
-from minesweeper.models import GAME_TYPES, Board, InvalidPositionException, AlreadyRevealedException
+from minesweeper.models import game_type_for_name, Board, InvalidPositionException, AlreadyRevealedException
 
-
-beginner = GAME_TYPES[0]
+beginner = game_type_for_name('beginner')
+hexagonal = game_type_for_name('hexagonal')
 
 
 class BoardTestCase(TestCase):
@@ -146,3 +146,51 @@ class BoardTestCase(TestCase):
         self.assertEqual(2, board.adjacent_mine_count(9))
         self.assertEqual(1, board.adjacent_mine_count(0))
         self.assertEqual(1, board.adjacent_mine_count(4))
+
+
+class HexagonalBoardTestCase(TestCase):
+    def test_adjacent_mine_count_for_corner_mines(self):
+        # M   1   x   x   x
+        #   1   x   x   x   x
+        # x   x   x   x   x
+        board = Board(hexagonal, [0])
+        self.assertEqual(1, board.adjacent_mine_count(1))
+        self.assertEqual(0, board.adjacent_mine_count(2))
+        self.assertEqual(1, board.adjacent_mine_count(24))
+        self.assertEqual(0, board.adjacent_mine_count(25))
+        self.assertEqual(0, board.adjacent_mine_count(48))
+
+    def test_adjacent_mine_count_for_mine_islands(self):
+        # x   x   x   x   x
+        #   x   1   1   x   x
+        # x   1   M   1   x
+        #   x   1   1   x   x
+        # x   x   x   x   x
+        board = Board(hexagonal, [50])
+        # above
+        self.assertEqual(0, board.adjacent_mine_count(24))
+        self.assertEqual(1, board.adjacent_mine_count(25))
+        self.assertEqual(1, board.adjacent_mine_count(26))
+        self.assertEqual(0, board.adjacent_mine_count(27))
+        # mine row
+        self.assertEqual(0, board.adjacent_mine_count(48))
+        self.assertEqual(1, board.adjacent_mine_count(49))
+        self.assertEqual(1, board.adjacent_mine_count(51))
+        self.assertEqual(0, board.adjacent_mine_count(52))
+        # below
+        self.assertEqual(0, board.adjacent_mine_count(72))
+        self.assertEqual(1, board.adjacent_mine_count(73))
+        self.assertEqual(1, board.adjacent_mine_count(74))
+        self.assertEqual(0, board.adjacent_mine_count(75))
+
+    def test_adjacent_mine_count_for_high_mine_cells(self):
+        # x   x   x   x   x
+        #   x   1   2   1   x
+        # x   1   M   M   2
+        #   x   2   4   M   x
+        # x   1   M   M   2
+        board = Board(hexagonal, [50, 51, 75, 98, 99])
+        self.assertEqual(5, board.adjacent_mine_count(74))
+        self.assertEqual(2, board.adjacent_mine_count(26))
+        self.assertEqual(2, board.adjacent_mine_count(73))
+        self.assertEqual(1, board.adjacent_mine_count(97))

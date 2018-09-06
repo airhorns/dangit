@@ -72,20 +72,10 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
   }
 
   public onCellAction(position: number, action: MinefieldAction, openmap: Set<number>, makeMove: MutationFn) {
-    const mutationData = {variables: {position, action, id: this.props.id}};
-    switch (action) {
-      case MinefieldAction.Flag:
-        makeMove(mutationData); // Always toggle the flag of a cell
-        break;
-      case MinefieldAction.Open:
-        // Only open a cell if it isn't already open
-        if (!openmap.has(position)) {
-          makeMove(mutationData);
-        }
-        break;
-       default:
-      throw new RangeError(`Unknown MinefieldAction: ${action}`);
-     }
+    // Don't re-open or flag already open positions
+    if (!openmap.has(position)) {
+      makeMove({variables: {position, action, id: this.props.id}});
+    }
   }
 
   public render() {
@@ -113,8 +103,7 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
                     <GameHeader open={data.gameState.open} won={data.gameState.won} gameType={data.gameState.gameType} />
                     <Confetti active={data.gameState.won}/>
                     <Minefield
-                      rows={data.gameState.gameType.rows}
-                      columns={data.gameState.gameType.columns}
+                      gameType={data.gameState.gameType}
                       openmap={openmap}
                       flagmap={flagmap}
                       minemap={minemap}

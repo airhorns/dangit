@@ -13,8 +13,11 @@ export interface IAdjacentMineCounts {
 }
 
 interface IMinefieldProps {
-  rows: number;
-  columns: number;
+  gameType: {
+    name: string;
+    rows: number;
+    columns: number;
+  };
   openmap: Set<number>;
   flagmap: Set<number>;
   minemap?: Set<number>;
@@ -26,9 +29,9 @@ const range = (upto: number) => Array.from(Array(upto).keys());
 
 export class Minefield extends React.Component<IMinefieldProps, {}> {
   public render() {
-    const rows = range(this.props.rows).map((row) => {
-      const cells = range(this.props.columns).map((column) => {
-        const position = (row * this.props.columns) + column;
+    const rows = range(this.props.gameType.rows).map((row) => {
+      const cells = range(this.props.gameType.columns).map((column) => {
+        const position = (row * this.props.gameType.columns) + column;
         return <MinefieldCell
           key={position}
           position={position}
@@ -43,7 +46,7 @@ export class Minefield extends React.Component<IMinefieldProps, {}> {
       return <MinefieldRow key={row}>{cells}</MinefieldRow>;
     });
 
-    return <div className="minefield">
+    return <div className={`minefield ${this.props.gameType.name.includes("hexagonal") && "minefield__hexagonal"}`}>
       {rows}
     </div>;
   }

@@ -4,6 +4,7 @@ from collections import namedtuple
 def position(row, column, rows):
     return (row * rows) + column
 
+
 def square_position_adjacency_lookup(rows, columns):
     lookup = {}
 
@@ -21,7 +22,7 @@ def square_position_adjacency_lookup(rows, columns):
                 (row + 1, column - 1), (row + 1, column), (row + 1, column + 1)
             ]
 
-            lookup[position(row, column)] = frozenset(map(
+            lookup[position(row, column, rows)] = frozenset(map(
                 lambda tup: position(tup[0], tup[1], rows),
                 filter(lambda tup: valid(tup[0], tup[1]), candidates)
             ))
@@ -30,6 +31,17 @@ def square_position_adjacency_lookup(rows, columns):
 
 
 def hexagonal_position_adjacency_lookup(rows, columns):
+    # Rows are offset by one in presentation but not in index
+    # 0   1   2   3   4
+    #   5   6   7   8   9
+    # 10  11  12  13  14
+
+    # x   x   x   x   x
+    #   x   1   1   x   x
+    # x   1   M   1   x
+    #   x   1   1   x   x
+    # x   x   x   x   x
+
     lookup = {}
 
     def valid(row, column):
@@ -37,18 +49,18 @@ def hexagonal_position_adjacency_lookup(rows, columns):
 
     for row in range(0, rows):
         for column in range(0, columns):
+            column_offset = 0 if row % 2 == 0 else 1
+
             candidates = [
-                # Directly Above
-                (row - 2, column),
                 # Above left and right
-                (row - 1, column), (row - 1, column + 1)
+                (row - 1, column - 1 + column_offset), (row - 1, column + column_offset),
+                # Beside left and right
+                (row, column - 1), (row, column + 1),
                 # Below left and right
-                (row + 1, column), (row + 1, column + 1)
-                # Directly Below
-                (row + 2, column)
+                (row + 1, column - 1 + column_offset), (row + 1, column + column_offset),
             ]
 
-            lookup[position(row, column)] = frozenset(map(
+            lookup[position(row, column, rows)] = frozenset(map(
                 lambda tup: position(tup[0], tup[1], rows),
                 filter(lambda tup: valid(tup[0], tup[1]), candidates)
             ))

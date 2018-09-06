@@ -25,3 +25,31 @@
   width: 100%;
   display: flex;
 }
+
+.minefield__hexagonal .minefield-cell, .minefield__hexagonal .minefield-cell.minefield-cell__open {
+  background-color: transparent;
+  border: 0px solid black;
+  z-index: 1;
+}
+
+.minefield__hexagonal .minefield-cell::before {
+  position: absolute;
+  z-index: -1;
+  margin-top: -.5rem;
+  font-size: 3.7rem;
+  content: "\2B22";
+  color: #888;
+  float: left;
+}
+
+.minefield__hexagonal .minefield-cell.minefield-cell__open::before {
+  color: #EEE;
+}
+
+.minefield__hexagonal .minefield-cell.minefield-cell__flagged::before {
+  color: hsl(348, 100%, 61%);
+}
+
+.minefield__hexagonal .minefield-row:nth-child(2n) {
+  margin-left: 1.6rem;
+}
