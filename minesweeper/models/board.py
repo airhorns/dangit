@@ -50,9 +50,16 @@ class Board(object):
         new_openmap = set(self.openmap)
         new_openmap.add(position)
 
+        # Remove the position from the flag map, since opening means the player thinks there's no mine
+        if position in self.flagmap:
+            new_flagmap = set(self.flagmap)
+            new_flagmap.remove(position)
+        else:
+            new_flagmap = self.flagmap
+
+        # If this newly openend position is next to 0 mines, then we need to expand the empty zone
+        # that might be around this position
         if position not in self.minemap:
-            # If this newly openend position is next to 0 mines, then we need to expand the empty zone
-            # that might be around this position
             auto_open_queue = set([position])
             while auto_open_queue:
                 candidate = auto_open_queue.pop()
@@ -64,7 +71,7 @@ class Board(object):
                         if neighbour not in new_openmap:
                             auto_open_queue.add(neighbour)
 
-        return Board(self.game_type, self.minemap, new_openmap, self.flagmap)
+        return Board(self.game_type, self.minemap, new_openmap, new_flagmap)
 
     # Returns a new board with the cell at the given position's flag toggled
     def toggle_flag(self, position):

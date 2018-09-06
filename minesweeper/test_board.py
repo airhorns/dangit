@@ -36,6 +36,15 @@ class BoardTestCase(TestCase):
         with self.assertRaises(InvalidPositionException):
             board.open(100000)
 
+    def test_opening_a_flagged_position_removes_the_flag_from_the_position(self):
+        board = Board(beginner, [1, 2, 3], [])
+
+        board = board.toggle_flag(20)
+        self.assertCountEqual([20], board.flagmap)
+
+        board = board.open(20)
+        self.assertCountEqual([], board.flagmap)
+
     def test_opening_an_position_adjacent_to_mines_doesnt_autoopen_other_positions(self):
         board = Board(beginner, [1, 2, 3], [])
         self.assertGreater(board.adjacent_mine_count(4), 0)
