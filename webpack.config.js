@@ -3,7 +3,7 @@ var process = require("process");
 var webpack = require("webpack");
 var BundleTracker = require("webpack-bundle-tracker");
 
-const devtool = process.env["NODE_ENV"] === "production" ? undefined : "inline-source-map";
+const devtool = process.env["NODE_ENV"] === "production" ? "source-map" : "inline-source-map";
 
 module.exports = {
   context: __dirname,
