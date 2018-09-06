@@ -57,31 +57,35 @@ export class LoginModal extends React.Component<ILoginModalProps, ILoginModalSta
               return <Box>
                 <Heading>Login to Dangit!</Heading>
                 {data && !data.login.ok && <Notification>Invalid username or passworrd</Notification>}
-                <Form.Field>
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      type="email"
-                      placeholder="Email"
-                      value={this.state.email}
-                      onChange={(e: React.FormEvent<HTMLInputElement>) => this.handleChange("email", e)}
-                    />
-                  </Form.Control>
-                </Form.Field>
+                <form onSubmit={() => login({variables: this.state})}>
+                  <Form.Field>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control>
+                      <Form.Input
+                        type="email"
+                        placeholder="Email"
+                        required
+                        value={this.state.email}
+                        onChange={(e: React.FormEvent<HTMLInputElement>) => this.handleChange("email", e)}
+                      />
+                    </Form.Control>
+                  </Form.Field>
 
-                <Form.Field>
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      type="password"
-                      placeholder="Password"
-                      value={this.state.password}
-                      onChange={(e: React.FormEvent<HTMLInputElement>) => this.handleChange("password", e)}
-                    />
-                  </Form.Control>
-                </Form.Field>
+                  <Form.Field>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control>
+                      <Form.Input
+                        type="password"
+                        placeholder="Password"
+                        required
+                        value={this.state.password}
+                        onChange={(e: React.FormEvent<HTMLInputElement>) => this.handleChange("password", e)}
+                      />
+                    </Form.Control>
+                  </Form.Field>
 
-                <Button color="info" onClick={() => login({variables: this.state})}>Login</Button>
+                  <Button color="info">Login</Button>
+                </form>
                 <hr/>
 
                 <p>Don't have an account? <Link to="/register" onClick={() => this.props.modal && this.props.modal.close()}>Sign up here</Link>.</p>

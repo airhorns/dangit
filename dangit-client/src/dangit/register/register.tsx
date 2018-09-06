@@ -54,31 +54,35 @@ export class Register extends React.Component<{}, IRegisterState> {
                 <Columns.Column  size="half">
                   <Heading>New Account Time!</Heading>
                   <Box>
-                    <Form.Field>
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control>
-                        <Form.Input
-                          type="email"
-                          placeholder="Email"
-                          value={this.state.email}
-                          onChange={(e: React.FormEvent<HTMLInputElement>) => this.handleChange("email", e)}
-                        />
-                      </Form.Control>
-                    </Form.Field>
+                    <form onSubmit={() => register({variables: this.state})}>
+                      <Form.Field>
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control>
+                          <Form.Input
+                            type="email"
+                            placeholder="Email"
+                            required
+                            value={this.state.email}
+                            onChange={(e: React.FormEvent<HTMLInputElement>) => this.handleChange("email", e)}
+                          />
+                        </Form.Control>
+                      </Form.Field>
 
-                    <Form.Field>
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control>
-                        <Form.Input
-                          type="password"
-                          placeholder="Password"
-                          value={this.state.password}
-                          onChange={(e: React.FormEvent<HTMLInputElement>) => this.handleChange("password", e)}
-                        />
-                      </Form.Control>
-                    </Form.Field>
+                      <Form.Field>
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control>
+                          <Form.Input
+                            type="password"
+                            placeholder="Password"
+                            required
+                            value={this.state.password}
+                            onChange={(e: React.FormEvent<HTMLInputElement>) => this.handleChange("password", e)}
+                          />
+                        </Form.Control>
+                      </Form.Field>
 
-                    <Button color="info" onClick={() => register({variables: this.state})}>Register</Button>
+                      <Button color="info">Register</Button>
+                    </form>
                   </Box>
                 </Columns.Column>
               </Columns>
