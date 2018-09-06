@@ -8,11 +8,16 @@ export enum MinefieldAction {
   Flag = "FLAG",
 }
 
+export interface IAdjacentMineCounts {
+  [key: number]: number;
+}
+
 interface IMinefieldProps {
   rows: number;
   columns: number;
   openmap: Set<number>;
   flagmap: Set<number>;
+  adjacentMineCounts: IAdjacentMineCounts;
   actionCallback: (position: number, action: MinefieldAction) => void;
 }
 
@@ -26,6 +31,7 @@ export class Minefield extends React.Component<IMinefieldProps, {}> {
         return <MinefieldCell
           key={position}
           position={position}
+          contents={`${this.props.adjacentMineCounts[position] || ""}`}
           actionCallback={this.props.actionCallback}
           open={this.props.openmap.has(position)}
           flagged={this.props.flagmap.has(position)}

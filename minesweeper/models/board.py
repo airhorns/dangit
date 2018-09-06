@@ -1,3 +1,4 @@
+from functools import reduce
 # Immutable class representing one state of the board.
 # minemap, openmap, flagmap are all 0-indexed one dimensional arrays of positions
 #  - minemap contains the postitions of each mine on the board
@@ -42,6 +43,7 @@ class Board(object):
 
         return None
 
+    # Returns a new board with the cell at position (and any side effect cells) revealed
     def open(self, position):
         self._validate_position(position)
         # Add the newly opened position to the list of openend positions
@@ -64,6 +66,7 @@ class Board(object):
 
         return Board(self.game_type, self.minemap, new_openmap, self.flagmap)
 
+    # Returns a new board with the cell at the given position's flag toggled
     def toggle_flag(self, position):
         self._validate_position(position)
 
@@ -78,9 +81,20 @@ class Board(object):
 
         return Board(self.game_type, self.minemap, self.openmap, new_flagmap)
 
+    # Returns the number of mines adjacent to position
     def adjacent_mine_count(self, position):
         self._validate_position(position)
         return len(self.game_type.adjacent_positions[position].intersection(self.minemap))
+
+    # Returns a dict of {position: mine_counts} for showing the hint numbers to a player
+    def adjacent_mine_counts_for_openmap(self):
+        def reducer(counts, position):
+            count = self.adjacent_mine_count(position)
+            if count > 0:
+                counts[position] = count
+            return counts
+
+        return reduce(reducer, self.openmap, {})
 
     def _validate_position(self, position):
         if (position < 0) or (position > self.game_type.total_positions()):

@@ -5,9 +5,20 @@ from minesweeper.models import GameState, GameMove, game_type_for_name
 from minesweeper.services import start_game, make_move, MoveActionType
 
 
+class AdjacentMineCountType(graphene.ObjectType):
+    position = graphene.Int(required=True)
+    mines = graphene.Int(required=True)
+
+
 class BoardType(graphene.ObjectType):
     openmap = graphene.List(graphene.Int, required=True)
     flagmap = graphene.List(graphene.Int, required=True)
+    adjacent_mine_counts = graphene.List(AdjacentMineCountType, required=True)
+
+    # GraphQL has no handy dict type, so we need to spit this out as a list of tuples where the
+    # fields of each tuple have a name.
+    def resolve_adjacent_mine_counts(self, info):
+        return [AdjacentMineCountType(position=position, mines=count) for (position, count) in self.adjacent_mine_counts_for_openmap().items()]
 
 
 class GameTypeType(graphene.ObjectType):

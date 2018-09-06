@@ -78,6 +78,31 @@ class BoardTestCase(TestCase):
         expected_openmap = set((i for i in range(64))).difference([0, 1, 2, 3])
         self.assertCountEqual(expected_openmap, board.openmap)
 
+    def test_adjacent_mine_counts_with_a_corner_mine(self):
+        #  M  1  x  x  x  x  x  x
+        #  1  1  x  x  x  x  x  x
+        #  x  x  x  x  x  x  x  x
+        board = Board(beginner, [0], []).open(5)
+
+        self.assertCountEqual({1: 1, 8: 1, 9: 1}, board.adjacent_mine_counts_for_openmap())
+
+    def test_adjacent_mine_counts_with_a_mine_island(self):
+        #  x  x  x  x  x  x  x  x
+        #  x  x  1  2  2  1  x  x
+        #  x  x  1  M  M  1  x  x
+        #  x  x  1  2  2  1  x  x
+        #  x  x  x  x  x  x  x  x
+        board = Board(beginner, [19, 20], []).open(0)
+        self.assertCountEqual({10: 1, 11: 2, 12: 2, 13: 1, 18: 1, 21: 1, 26: 1, 27: 2, 28: 2, 29: 1}, board.adjacent_mine_counts_for_openmap())
+
+    def test_adjacent_mine_counts_with_some_side_mines(self):
+        #  H  M  M  M  1  x  x  x
+        #  1  2  3  2  1  x  x  x
+        #  x  x  x  x  x  x  x  x
+        # The top left corner isn't reachable from the open space, so it shouldn't be opened
+        board = Board(beginner, [1, 2, 3], []).open(5)
+        self.assertCountEqual({4: 1, 8: 1, 9: 2, 10: 3, 11: 2, 12: 1}, board.adjacent_mine_counts_for_openmap())
+
     def test_flagging_a_position_adds_it_to_the_flagmap_or_removes_it_if_its_already_inside(self):
         board = Board(beginner, [1, 2, 3])
         self.assertCountEqual([], board.flagmap)

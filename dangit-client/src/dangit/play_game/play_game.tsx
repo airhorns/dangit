@@ -5,29 +5,41 @@ import { Mutation, MutationFn } from "react-apollo";
 import { Section, Container, Heading, Box } from "react-bulma-components";
 import { Error } from "../error";
 import { QuickQuery } from "../../quick_graphql";
-import { Minefield, MinefieldAction } from "./minefield";
+import { Minefield, MinefieldAction, IAdjacentMineCounts } from "./minefield";
 import { GameHeader } from "./game_header";
+
+const RENDERING_GAME_STATE_FRAGMENT = gql`
+  fragment RenderingGameState on GameStateType {
+    id
+    gameType {
+      rows
+      columns
+      mines
+      name
+    }
+    board {
+      openmap
+      flagmap
+      adjacentMineCounts {
+        position
+        mines
+      }
+    }
+    open
+    won
+    finishedAt
+  }
+`
+
 
 const GET_GAME_STATE = gql`
   query getGameState($id: Int!) {
     gameState(id: $id) {
-      id
-      gameType {
-        rows
-        columns
-        mines
-        name
-      }
-      board {
-        openmap
-        flagmap
-      }
-      open
-      won
+      ...RenderingGameState
       startedAt
-      finishedAt
     }
   }
+  ${RENDERING_GAME_STATE_FRAGMENT}
 `;
 
 const MAKE_MOVE = gql`
@@ -35,17 +47,11 @@ const MAKE_MOVE = gql`
     makeMove(id: $id, position: $position, action: $action) {
       ok
       gameState {
-        id
-        board {
-          openmap
-          flagmap
-        }
-        open
-        won
-        startedAt
+        ...RenderingGameState
       }
     }
   }
+  ${RENDERING_GAME_STATE_FRAGMENT}
 `;
 
 interface IPlayGameProps {
@@ -95,8 +101,11 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
                   }
 
                   const openmap: Set<number> = new Set(data.gameState.board.openmap);
-                  console.log(openmap);
                   const flagmap: Set<number> = new Set(data.gameState.board.flagmap);
+                  const adjacentMineCounts = data.gameState.board.adjacentMineCounts.reduce((counts: IAdjacentMineCounts, pair: {position: number, mines: number}) => {
+                    counts[pair.position] = pair.mines;
+                    return counts;
+                  }, {} as IAdjacentMineCounts);
 
                   return <Box>
                     <GameHeader open={data.gameState.open} won={data.gameState.won} gameType={data.gameState.gameType} />
@@ -105,6 +114,7 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
                       columns={data.gameState.gameType.columns}
                       openmap={openmap}
                       flagmap={flagmap}
+                      adjacentMineCounts={adjacentMineCounts}
                       actionCallback={(position, action) => {
                         if (data.gameState.open) {
                           this.onCellAction(position, action, openmap, makeMove);
