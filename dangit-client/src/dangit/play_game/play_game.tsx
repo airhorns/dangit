@@ -82,7 +82,6 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
     return <DocumentTitle title={`Dangit! Play Game ${this.props.id}`}>
       <Section>
         <Container>
-          <Heading>Game Time.</Heading>
           <QuickQuery query={GET_GAME_STATE} variables={{id: this.props.id}}>
             {(data) => {
               return <Mutation mutation={MAKE_MOVE}>
@@ -99,22 +98,25 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
                     return counts;
                   }, {} as IAdjacentMineCounts);
 
-                  return <Box>
-                    <GameHeader open={data.gameState.open} won={data.gameState.won} gameType={data.gameState.gameType} />
-                    <Confetti active={data.gameState.won}/>
-                    <Minefield
-                      gameType={data.gameState.gameType}
-                      openmap={openmap}
-                      flagmap={flagmap}
-                      minemap={minemap}
-                      adjacentMineCounts={adjacentMineCounts}
-                      actionCallback={(position, action) => {
-                        if (data.gameState.open) {
-                          this.onCellAction(position, action, openmap, makeMove);
-                        }
-                      }}
-                    />
-                  </Box>;
+                  return <React.Fragment>
+                    <Heading>Game {data.gameState.open ? "Time." : "Over."}</Heading>
+                    <Box>
+                      <GameHeader open={data.gameState.open} won={data.gameState.won} gameType={data.gameState.gameType} />
+                      <Confetti active={data.gameState.won}/>
+                      <Minefield
+                        gameType={data.gameState.gameType}
+                        openmap={openmap}
+                        flagmap={flagmap}
+                        minemap={minemap}
+                        adjacentMineCounts={adjacentMineCounts}
+                        actionCallback={(position, action) => {
+                          if (data.gameState.open) {
+                            this.onCellAction(position, action, openmap, makeMove);
+                          }
+                        }}
+                      />
+                    </Box>
+                  </React.Fragment>;
               }}
             </Mutation>;
             }}
