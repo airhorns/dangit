@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { Tag, Form } from "react-bulma-components";
 
 interface IGameHeaderProps {
@@ -48,6 +49,9 @@ export class GameHeader extends React.Component<IGameHeaderProps, {}> {
           <Tag color={this.colorForStatus()}>{this.statusText()}</Tag>
         </Tag.Group>
       </Form.Control>
+      {!this.props.open && <Form.Control>
+        <Link to="/new">Play again?</Link>
+      </Form.Control>}
     </Form.Field>;
   }
 }

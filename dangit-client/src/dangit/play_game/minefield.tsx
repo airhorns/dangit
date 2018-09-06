@@ -17,6 +17,7 @@ interface IMinefieldProps {
   columns: number;
   openmap: Set<number>;
   flagmap: Set<number>;
+  minemap?: Set<number>;
   adjacentMineCounts: IAdjacentMineCounts;
   actionCallback: (position: number, action: MinefieldAction) => void;
 }
@@ -31,10 +32,11 @@ export class Minefield extends React.Component<IMinefieldProps, {}> {
         return <MinefieldCell
           key={position}
           position={position}
-          contents={`${this.props.adjacentMineCounts[position] || ""}`}
+          adjacentMines={this.props.adjacentMineCounts[position]}
           actionCallback={this.props.actionCallback}
           open={this.props.openmap.has(position)}
           flagged={this.props.flagmap.has(position)}
+          mine={!!(this.props.minemap && this.props.minemap.has(position))}
         />;
       });
 

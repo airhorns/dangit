@@ -13,12 +13,20 @@ class AdjacentMineCountType(graphene.ObjectType):
 class BoardType(graphene.ObjectType):
     openmap = graphene.List(graphene.Int, required=True)
     flagmap = graphene.List(graphene.Int, required=True)
+    minemap = graphene.List(graphene.Int)
     adjacent_mine_counts = graphene.List(AdjacentMineCountType, required=True)
 
     # GraphQL has no handy dict type, so we need to spit this out as a list of tuples where the
     # fields of each tuple have a name.
     def resolve_adjacent_mine_counts(self, info):
         return [AdjacentMineCountType(position=position, mines=count) for (position, count) in self.adjacent_mine_counts_for_openmap().items()]
+
+    # Only allow access to the minemap if the game is over.
+    def resolve_minemap(self, info):
+        if self.won() is not None:
+            return self.minemap
+        else:
+            return None
 
 
 class GameTypeType(graphene.ObjectType):

@@ -20,6 +20,7 @@ const RENDERING_GAME_STATE_FRAGMENT = gql`
     board {
       openmap
       flagmap
+      minemap
       adjacentMineCounts {
         position
         mines
@@ -29,8 +30,7 @@ const RENDERING_GAME_STATE_FRAGMENT = gql`
     won
     finishedAt
   }
-`
-
+`;
 
 const GET_GAME_STATE = gql`
   query getGameState($id: Int!) {
@@ -102,6 +102,7 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
 
                   const openmap: Set<number> = new Set(data.gameState.board.openmap);
                   const flagmap: Set<number> = new Set(data.gameState.board.flagmap);
+                  const minemap: Set<number> = data.gameState.board.minemap && new Set(data.gameState.board.minemap);
                   const adjacentMineCounts = data.gameState.board.adjacentMineCounts.reduce((counts: IAdjacentMineCounts, pair: {position: number, mines: number}) => {
                     counts[pair.position] = pair.mines;
                     return counts;
@@ -114,6 +115,7 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
                       columns={data.gameState.gameType.columns}
                       openmap={openmap}
                       flagmap={flagmap}
+                      minemap={minemap}
                       adjacentMineCounts={adjacentMineCounts}
                       actionCallback={(position, action) => {
                         if (data.gameState.open) {
