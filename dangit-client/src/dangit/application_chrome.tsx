@@ -49,7 +49,10 @@ export class ApplicationChrome extends React.Component<{}, {burgerOpen: boolean}
             <QuickQuery query={LOGGED_IN}>
               {(data) => {
                 if (data.user) {
-                  return <LogoutButton className="navbar-item"/>;
+                  return <React.Fragment>
+                    <NavLink className="navbar-item" to="/games">My Games</NavLink>
+                    <LogoutButton className="navbar-item"/>
+                  </React.Fragment>;
                 } else {
                   return <ModalButton renderAsLink={true} className="navbar-item" text="Log In">
                     {(modal) => <LoginModal modal={modal}/>}

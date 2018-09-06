@@ -15,9 +15,7 @@ import { NoMatch } from "./no_match";
 import { NewGameMenu } from "./new_game_menu";
 import { PlayGame } from "./play_game";
 import { Register } from "./register";
-
-const csrfInput = document.querySelector("input[name=csrfmiddlewaretoken]") as HTMLInputElement;
-const csrfToken = csrfInput && csrfInput.value || null;
+import { GamesIndex } from "./games";
 
 const client = new ApolloClient({
   link: ApolloLink.from([
@@ -52,6 +50,7 @@ export class Root extends React.Component<{}, {}> {
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path="/new" exact component={NewGameMenu} />
+                <Route path="/games" exact component={GamesIndex} />
                 <Route path="/game/:id" render={({match}) => <PlayGame id={match.params.id}/>}/>
                 <Route path="/register" exact component={Register}/>
                 <Route component={NoMatch} />

@@ -102,7 +102,10 @@ class Query(object):
     all_game_states = graphene.List(GameStateType, description="Retrieve all gamestates for the currently logged in user, if there is one.")
 
     def resolve_all_game_states(self, info):
-        return GameState.objects.all()
+        if info.context.user.is_authenticated:
+            return GameState.objects.filter(owning_player=info.context.user).order_by('-started_at')
+        else:
+            return []
 
     def resolve_game_state(self, info, id):
         return GameState.objects.get(pk=id)
