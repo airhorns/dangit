@@ -1,7 +1,7 @@
 import * as React from "react";
 import gql from "graphql-tag";
 import { Redirect } from "react-router-dom";
-import { QuickMutation } from "../../quick_graphql";
+import { QuickMutation, MutationFn } from "../../quick_graphql";
 import DocumentTitle from "react-document-title";
 import { Section, Container, Heading, Tile } from "react-bulma-components";
 import { GameTypeTile } from "./game_type_tile";
@@ -18,7 +18,13 @@ const START_GAME = gql`
   }
 `;
 
-const GAME_TYPES = [
+interface IGameType {
+  name: string;
+  description: string;
+  color: string;
+}
+
+const STANDARD_GAME_TYPES: IGameType[] = [
   {
     name: "beginner",
     description: "Start off mild with a 10 mine game.",
@@ -34,8 +40,28 @@ const GAME_TYPES = [
   },
 ];
 
+const WEIRD_GAME_TYPES: IGameType[] = [
+  {
+    name: "hexagonal",
+    description: "Find 99 mines in a fancy six-sided grid!",
+    color: "warning",
+  }
+];
+
 const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+const gameTypeTiles = (startGame: MutationFn, gameTypes: IGameType[]) => {
+  return gameTypes.map(({name, description, color}) => {
+    return <GameTypeTile
+      title={capitalizeFirstLetter(name)}
+      key={name}
+      color={color}
+      description={description}
+      startCallback={(_) => startGame({variables: {gameType: name}})}
+    />
+  });
 };
 
 export class NewGameMenu extends React.Component<{}, {}> {
@@ -53,20 +79,15 @@ export class NewGameMenu extends React.Component<{}, {}> {
               }
             }
 
-            const gameTiles = GAME_TYPES.map(({name, description, color}) => {
-              return <GameTypeTile
-                title={capitalizeFirstLetter(name)}
-                key={name}
-                color={color}
-                description={description}
-                startCallback={(_) => startGame({variables: {gameType: name}})}
-              />;
-            });
-
             return <React.Fragment>
               <Heading>New Game Time!</Heading>
+              <Heading subtitle>Classic game types:</Heading>
               <Tile kind="ancestor">
-                {gameTiles}
+                {gameTypeTiles(startGame, STANDARD_GAME_TYPES)}
+              </Tile>
+              <Heading subtitle>Weird game types:</Heading>
+              <Tile kind="ancestor">
+                {gameTypeTiles(startGame, WEIRD_GAME_TYPES)}
               </Tile>
             </React.Fragment>;
           }}
