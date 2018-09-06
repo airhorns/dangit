@@ -51,6 +51,7 @@ Run `bin/autolint` to automatically lint and conform all code to PEP8/ES6 standa
  - [ ] Implement user sign up
  - [ ] Implement user homepage / game list
  - [ ] Implement user stats / leaderboards
+ - [ ] Implement board generator that doesn't require guessing
  - [ ] Implement hexagonal game
  - [ ] Deploy via k8s
  - [ ] Implement real time game type
