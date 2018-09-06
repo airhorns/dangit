@@ -64,7 +64,7 @@ class SchemaTestCase(TestCase):
             }
         }
         # execute once to create user
-        result = schema.execute(query)
+        result = schema.execute(query, context_value=self.request())
         self.assertTrue(result.data['register']['ok'])
 
         # execute again to trigger duplicate email

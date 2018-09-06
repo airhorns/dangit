@@ -1,10 +1,9 @@
 import * as React from "react";
 import gql from "graphql-tag";
-import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { QuickMutation } from "../../quick_graphql";
 import DocumentTitle from "react-document-title";
-import { Section, Columns, Button, Container, Heading, Box, Form } from "react-bulma-components";
-import { Error } from "../error";
+import { Section, Columns, Button, Container, Notification, Heading, Box, Form, Icon } from "react-bulma-components";
 
 const REGISTER = gql`
   mutation register($email: String!, $password: String!) {
@@ -43,9 +42,14 @@ export class Register extends React.Component<{}, IRegisterState> {
           {(register, data?) => {
             if (data) {
               if (data.register.ok) {
-                return <Redirect to="/"/>;
-              } else {
-                return <Error text="We're unable to register you right now."/>;
+                return <Notification color="success">
+                  <Heading>You have been registered!</Heading>
+                  <Heading subtitle>You are now logged in. Thanks for joining Dangit.</Heading>
+                  <Button renderAs={Link} size="large" to="/new">
+                    <Icon icon=" fas fa-plus" />
+                    <span>Start a Game</span>
+                  </Button>
+                </Notification>;
               }
             }
 
@@ -54,6 +58,7 @@ export class Register extends React.Component<{}, IRegisterState> {
                 <Columns.Column  size="half">
                   <Heading>New Account Time!</Heading>
                   <Box>
+                    {data && data.register.errors && <Notification color="danger">{data.register.errors.join(": ")}</Notification>}
                     <form onSubmit={() => register({variables: this.state})}>
                       <Form.Field>
                         <Form.Label>Email</Form.Label>

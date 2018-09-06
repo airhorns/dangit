@@ -2,6 +2,7 @@ import graphene
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 
 class UserType(DjangoObjectType):
@@ -19,12 +20,19 @@ class Register(graphene.Mutation):
     errors = graphene.List(graphene.String)
 
     def mutate(self, info, email, password):
+        request = info.context
+
         try:
-            user = User.objects.create(email=email, is_active=True)  # cheat, and don't do email activation for now
+            user = User.objects.create(username=email, email=email, is_active=True)  # cheat, and don't do email activation for now
             user.set_password(password)
             user.save()
+
+            # Auto log the user in since we care more about ease of use than security, and there's no validation step
+            if user.id:
+                login(request, user)
+
             return Register(ok=bool(user.id))
-        except Exception:
+        except IntegrityError as e:
             errors = ["email", "Email already registered."]
             return Register(ok=False, errors=errors)
 
