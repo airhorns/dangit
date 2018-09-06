@@ -27,7 +27,7 @@ export class Home extends React.Component<{}, {}> {
                 if (data.user) {
                   return <Level.Item>
                     Signed in as {data.user.email}
-                  </Level.Item>
+                  </Level.Item>;
                 } else {
                   return <React.Fragment>
                     <Level.Item>

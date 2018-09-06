@@ -85,7 +85,7 @@ export class LoginModal extends React.Component<ILoginModalProps, ILoginModalSta
                 <hr/>
 
                 <p>Don't have an account? <Link to="/register" onClick={() => this.props.modal && this.props.modal.close()}>Sign up here</Link>.</p>
-              </Box>
+              </Box>;
             }}
           </QuickMutation>
         </Section>

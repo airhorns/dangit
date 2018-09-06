@@ -18,7 +18,7 @@ export class ApplicationChrome extends React.Component<{}, {burgerOpen: boolean}
     super(props);
     this.state = {
       burgerOpen: false,
-    }
+    };
   }
 
   public render() {

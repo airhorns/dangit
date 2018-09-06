@@ -26,7 +26,7 @@ export class Register extends React.Component<{}, IRegisterState> {
     this.state = {
       email: "",
       password: "",
-    }
+    };
   }
 
   public handleChange(fieldname: keyof IRegisterState, event: React.FormEvent<HTMLInputElement>) {

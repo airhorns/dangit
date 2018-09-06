@@ -45,7 +45,7 @@ const WEIRD_GAME_TYPES: IGameType[] = [
     name: "hexagonal",
     description: "Find 99 mines in a fancy six-sided grid!",
     color: "warning",
-  }
+  },
 ];
 
 const capitalizeFirstLetter = (str: string) => {
@@ -60,7 +60,7 @@ const gameTypeTiles = (startGame: MutationFn, gameTypes: IGameType[]) => {
       color={color}
       description={description}
       startCallback={(_) => startGame({variables: {gameType: name}})}
-    />
+    />;
   });
 };
 
