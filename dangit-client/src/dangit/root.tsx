@@ -39,16 +39,6 @@ const client = new ApolloClient({
     }),
   ]),
   cache: new InMemoryCache(),
-  defaultOptions: {  // disable apollo cache for now, we're not doing anything super data heavy and it's much more work to properly manage all the cache keys
-    watchQuery: {
-      fetchPolicy: "network-only",
-      errorPolicy: "ignore",
-    },
-    query: {
-      fetchPolicy: "network-only",
-      errorPolicy: "all",
-    },
-  },
 });
 
 export class Root extends React.Component<{}, {}> {

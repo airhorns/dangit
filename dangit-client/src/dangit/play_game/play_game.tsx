@@ -2,10 +2,11 @@ import * as React from "react";
 import gql from "graphql-tag";
 import DocumentTitle from "react-document-title";
 import { Mutation, MutationFn } from "react-apollo";
-import { Section, Container, Heading } from "react-bulma-components";
+import { Section, Container, Heading, Box } from "react-bulma-components";
 import { Error } from "../error";
 import { QuickQuery } from "../../quick_graphql";
 import { Minefield, MinefieldAction } from "./minefield";
+import { GameHeader } from "./game_header";
 
 const GET_GAME_STATE = gql`
   query getGameState($id: Int!) {
@@ -34,6 +35,7 @@ const MAKE_MOVE = gql`
     makeMove(id: $id, position: $position, action: $action) {
       ok
       gameState {
+        id
         board {
           openmap
           flagmap
@@ -50,9 +52,33 @@ interface IPlayGameProps {
   id: string;
 }
 
-export class PlayGame extends React.Component<IPlayGameProps, {}> {
-  public onCellAction(position: number, action: MinefieldAction, makeMove: MutationFn) {
-    makeMove({variables: {position, action, id: this.props.id}});
+interface IPlayGameState {
+  enabled: boolean;
+}
+
+export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
+  public constructor(props: IPlayGameProps) {
+    super(props);
+    this.state = {
+      enabled: true,
+    };
+  }
+
+  public onCellAction(position: number, action: MinefieldAction, openmap: Set<number>, makeMove: MutationFn) {
+    const mutationData = {variables: {position, action, id: this.props.id}};
+    switch (action) {
+      case MinefieldAction.Flag:
+        makeMove(mutationData); // Always toggle the flag of a cell
+        break;
+      case MinefieldAction.Open:
+        // Only open a cell if it isn't already open
+        if (!openmap.has(position)) {
+          makeMove(mutationData);
+        }
+        break;
+       default:
+      throw new RangeError(`Unknown MinefieldAction: ${action}`);
+     }
   }
 
   public render() {
@@ -68,13 +94,24 @@ export class PlayGame extends React.Component<IPlayGameProps, {}> {
                     return <Error text="There was an internal error making a move. Sorry!"/>;
                   }
 
-                  return <Minefield
-                    rows={data.gameState.gameType.rows}
-                    columns={data.gameState.gameType.columns}
-                    openmap={new Set(mutationData.data && mutationData.data.makeMove.gameState.board.openmap || data.gameState.board.openmap)}
-                    flagmap={new Set(mutationData.data && mutationData.data.makeMove.gameState.board.openmap || data.gameState.board.flagmap)}
-                    actionCallback={(position, action) => this.onCellAction(position, action, makeMove) }
-                  />;
+                  const openmap: Set<number> = new Set(data.gameState.board.openmap);
+                  console.log(openmap);
+                  const flagmap: Set<number> = new Set(data.gameState.board.flagmap);
+
+                  return <Box>
+                    <GameHeader open={data.gameState.open} won={data.gameState.won} gameType={data.gameState.gameType} />
+                    <Minefield
+                      rows={data.gameState.gameType.rows}
+                      columns={data.gameState.gameType.columns}
+                      openmap={openmap}
+                      flagmap={flagmap}
+                      actionCallback={(position, action) => {
+                        if (data.gameState.open) {
+                          this.onCellAction(position, action, openmap, makeMove);
+                        }
+                      }}
+                    />
+                  </Box>;
               }}
             </Mutation>;
             }}
