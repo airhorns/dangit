@@ -1,12 +1,15 @@
 var path = require("path");
+var process = require("process");
 var webpack = require("webpack");
 var BundleTracker = require("webpack-bundle-tracker");
 
+const devtool = process.env["NODE_ENV"] === "production" ? undefined : "inline-source-map";
+
 module.exports = {
   context: __dirname,
-  mode: "development",
+  mode: process.env["NODE_ENV"] || "development",
   entry: "./dangit-client/index",
-  devtool: 'inline-source-map',
+  devtool: devtool,
   output: {
       path: path.resolve("./dangit-client/output/bundles/"),
       filename: "[name]-[hash].js"
