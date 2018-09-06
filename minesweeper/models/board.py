@@ -24,8 +24,8 @@ class AlreadyRevealedException(Exception):
 
 
 class Board(object):
-    def __init__(self, gametype, minemap, openmap=[], flagmap=[]):
-        self.gametype = gametype
+    def __init__(self, game_type, minemap, openmap=[], flagmap=[]):
+        self.game_type = game_type
         self.minemap = frozenset(minemap)
         self.openmap = frozenset(openmap)
         self.flagmap = frozenset(flagmap)
@@ -37,7 +37,7 @@ class Board(object):
             return False
 
         # All openable tiles have been opened, game is won
-        if (len(self.openmap) + len(self.minemap)) == self.gametype.total_positions():
+        if (len(self.openmap) + len(self.minemap)) == self.game_type.total_positions():
             return True
 
         return None
@@ -57,11 +57,11 @@ class Board(object):
             processed_positions.add(candidate)
             if self.adjacent_mine_count(candidate) == 0:
                 new_openmap.add(candidate)
-                for neighbour in self.gametype.adjacent_positions[candidate]:  # look at the adjacent cells to see if they may be open as well
+                for neighbour in self.game_type.adjacent_positions[candidate]:  # look at the adjacent cells to see if they may be open as well
                     if neighbour not in processed_positions:
                         auto_open_queue.add(neighbour)
 
-        return Board(self.gametype, self.minemap, new_openmap, self.flagmap)
+        return Board(self.game_type, self.minemap, new_openmap, self.flagmap)
 
     def toggle_flag(self, position):
         self._validate_position(position)
@@ -75,12 +75,12 @@ class Board(object):
         else:
             new_flagmap.add(position)
 
-        return Board(self.gametype, self.minemap, self.openmap, new_flagmap)
+        return Board(self.game_type, self.minemap, self.openmap, new_flagmap)
 
     def adjacent_mine_count(self, position):
         self._validate_position(position)
-        return len(self.gametype.adjacent_positions[position].intersection(self.minemap))
+        return len(self.game_type.adjacent_positions[position].intersection(self.minemap))
 
     def _validate_position(self, position):
-        if (position < 0) or (position > self.gametype.total_positions()):
+        if (position < 0) or (position > self.game_type.total_positions()):
             raise InvalidPositionException()

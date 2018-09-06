@@ -30,7 +30,7 @@ const GET_GAME_STATE = gql`
 `;
 
 const MAKE_MOVE = gql`
-  mutation makeMove($id: Int!, $position: Int!, $action: CellActionType!) {
+  mutation makeMove($id: Int!, $position: Int!, $action: MoveActionType!) {
     makeMove(id: $id, position: $position, action: $action) {
       ok
       gameState {

@@ -2,24 +2,22 @@ import graphene
 
 from graphene_django.types import DjangoObjectType
 from minesweeper.models import GameState, GameMove, game_type_for_name
-from minesweeper.services import start_game, make_move
-
-
-class GameTypeType(graphene.ObjectType):
-    name = graphene.String()
-    columns = graphene.Int()
-    rows = graphene.Int()
-    mines = graphene.Int()
+from minesweeper.services import start_game, make_move, MoveActionType
 
 
 class BoardType(graphene.ObjectType):
-    openmap = graphene.List(graphene.Int)
-    flagmap = graphene.List(graphene.Int)
+    openmap = graphene.List(graphene.Int, required=True)
+    flagmap = graphene.List(graphene.Int, required=True)
 
 
-class CellActionType(graphene.Enum):
-    OPEN = 0
-    FLAG = 1
+class GameTypeType(graphene.ObjectType):
+    name = graphene.String(required=True)
+    columns = graphene.Int(required=True)
+    rows = graphene.Int(required=True)
+    mines = graphene.Int(required=True)
+
+
+MoveActionGraphQLType = graphene.Enum.from_enum(MoveActionType)
 
 
 class GameStateType(DjangoObjectType):
@@ -39,6 +37,9 @@ class GameStateType(DjangoObjectType):
     def resolve_game_type_name(self, info):
         return self.game_type
 
+    def resolve_board(self, info):
+        return self.board()
+
 
 class GameMoveType(DjangoObjectType):
     class Meta:
@@ -54,8 +55,7 @@ class StartGame(graphene.Mutation):
 
     def mutate(self, info, gameType):
         user = info.context.user if info.context.user.is_authenticated else None
-        game_state = start_game(user=user, game_type_name=gameType)
-        ok = True
+        ok, game_state = start_game(user=user, game_type_name=gameType)
         return StartGame(game_state=game_state, ok=ok)
 
 
@@ -63,7 +63,7 @@ class MakeMove(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
         position = graphene.Int(required=True)
-        action = graphene.Argument(CellActionType, required=True)
+        action = graphene.Argument(MoveActionGraphQLType, required=True)
 
     ok = graphene.Boolean(required=True)
     game_state = graphene.Field(GameStateType)
@@ -74,8 +74,7 @@ class MakeMove(graphene.Mutation):
         if game_state.owning_player and game_state.owning_player != info.context.user:
             return MakeMove(False, None)
 
-        game_state = make_move(game_state, position, action)
-        ok = True
+        ok, game_state = make_move(game_state, position, MoveActionType(action))
         return MakeMove(game_state=game_state, ok=ok)
 
 

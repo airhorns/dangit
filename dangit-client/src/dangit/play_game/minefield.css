@@ -5,7 +5,16 @@
   height: 30vw;
   max-width: 50px;
   max-height: 50px;
-  border: 1px solid #EEE;
+  border: 1px solid #FFF;
+  background-color: #888;
+}
+
+.minefield-cell.minefield-cell__open {
+  background-color: #EEE;
+}
+
+.minefield-cell.minefield-cell__flagged {
+  background-color: red;
 }
 
 .minefield-row {

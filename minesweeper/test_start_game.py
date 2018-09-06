@@ -8,7 +8,7 @@ class StartGameTestCase(TestCase):
 
     def test_started_games_have_proper_bookkeeping(self):
         user = User.objects.get(pk=1)
-        game_state = start_game(user, "beginner")
+        ok, game_state = start_game(user, "beginner")
         self.assertIsNotNone(game_state.pk)
         self.assertEqual(game_state.owning_player, user)
         self.assertEqual(game_state.open, True)
@@ -17,6 +17,6 @@ class StartGameTestCase(TestCase):
         self.assertIsNotNone(game_state.started_at)
 
     def test_started_games_by_anonymous_users_have_proper_bookkeeping(self):
-        game_state = start_game(None, "beginner")
+        ok, game_state = start_game(None, "beginner")
         self.assertIsNotNone(game_state.pk)
         self.assertIsNone(game_state.owning_player)

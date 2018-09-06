@@ -26,4 +26,4 @@ def start_game(user, game_type_name):
     )
 
     game_state.save()
-    return game_state
+    return True, game_state
