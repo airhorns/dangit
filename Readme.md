@@ -47,8 +47,8 @@ Run `bin/autolint` to automatically lint and conform all code to PEP8/ES6 standa
  - [x] Classic game interface
  - [x] Save gamestate on server
  - [x] Fix auto open bug
- - [ ] Fix flagged animation
- - [ ] Display fun animation when game completes or fails & status on the game page
+ - [x] Fix flagged animation
+ - [x] Display fun animation when game completes or fails & status on the game page
  - [ ] Implement user login
  - [ ] Implement user sign up
  - [ ] Implement user homepage / game list

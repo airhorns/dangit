@@ -1,6 +1,7 @@
 import * as React from "react";
 import gql from "graphql-tag";
 import DocumentTitle from "react-document-title";
+import Confetti from "react-dom-confetti";
 import { Mutation, MutationFn } from "react-apollo";
 import { Section, Container, Heading, Box } from "react-bulma-components";
 import { Error } from "../error";
@@ -110,6 +111,7 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
 
                   return <Box>
                     <GameHeader open={data.gameState.open} won={data.gameState.won} gameType={data.gameState.gameType} />
+                    <Confetti active={data.gameState.won}/>
                     <Minefield
                       rows={data.gameState.gameType.rows}
                       columns={data.gameState.gameType.columns}

@@ -1505,6 +1505,10 @@ diffie-hellman@^5.0.0:
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
 
+dom-confetti@~0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/dom-confetti/-/dom-confetti-0.0.11.tgz#755bd77544202e38573d26463cd00cf648263a60"
+
 domain-browser@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
@@ -3079,6 +3083,12 @@ react-document-title@^2.0.3:
   dependencies:
     prop-types "^15.5.6"
     react-side-effect "^1.0.2"
+
+react-dom-confetti@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/react-dom-confetti/-/react-dom-confetti-0.0.10.tgz#6cde7af4af974ecf98ddf9da95c938144c68a4f0"
+  dependencies:
+    dom-confetti "~0.0.11"
 
 react-dom@^16.4.2:
   version "16.4.2"
