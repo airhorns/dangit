@@ -48,18 +48,19 @@ class Board(object):
         new_openmap = set(self.openmap)
         new_openmap.add(position)
 
-        # If this newly openend position is next to 0 mines, then we need to expand the empty zone
-        # that might be around this position
-        auto_open_queue = set([position])
-        processed_positions = set()
-        while auto_open_queue:
-            candidate = auto_open_queue.pop()
-            processed_positions.add(candidate)
-            if self.adjacent_mine_count(candidate) == 0:
+        if position not in self.minemap:
+            # If this newly openend position is next to 0 mines, then we need to expand the empty zone
+            # that might be around this position
+            auto_open_queue = set([position])
+            while auto_open_queue:
+                candidate = auto_open_queue.pop()
                 new_openmap.add(candidate)
-                for neighbour in self.game_type.adjacent_positions[candidate]:  # look at the adjacent cells to see if they may be open as well
-                    if neighbour not in processed_positions:
-                        auto_open_queue.add(neighbour)
+
+                if self.adjacent_mine_count(candidate) == 0:
+                    # this cell is also open, so look at the adjacent cells we haven 't looked at yet to see if they may be open as well
+                    for neighbour in self.game_type.adjacent_positions[candidate]:
+                        if neighbour not in new_openmap:
+                            auto_open_queue.add(neighbour)
 
         return Board(self.game_type, self.minemap, new_openmap, self.flagmap)
 

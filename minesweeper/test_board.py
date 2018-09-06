@@ -42,12 +42,40 @@ class BoardTestCase(TestCase):
         board = board.open(4)
         self.assertCountEqual([4], board.openmap)
 
-    def test_opening_an_openable_position_opens_all_other_positions_with_no_adjacent_mines(self):
+    def test_opening_space_with_a_corner_mine(self):
+        #  M  1  x  x  x  x  x  x
+        #  1  1  x  x  x  x  x  x
+        #  x  x  x  x  x  x  x  x
+        board = Board(beginner, [0], [])
+        self.assertEqual(0, board.adjacent_mine_count(5))
+
+        board = board.open(5)
+        expected_openmap = set((i for i in range(64))).difference([0])
+        self.assertCountEqual(expected_openmap, board.openmap)
+
+    def test_opening_space_with_a_mine_island(self):
+        #  x  x  x  x  x  x  x  x
+        #  x  x  1  2  2  1  x  x
+        #  x  x  1  M  M  1  x  x
+        #  x  x  1  2  2  1  x  x
+        #  x  x  x  x  x  x  x  x
+        board = Board(beginner, [19, 20], [])
+        self.assertEqual(0, board.adjacent_mine_count(0))
+
+        board = board.open(0)
+        expected_openmap = set((i for i in range(64))).difference([19, 20])
+        self.assertCountEqual(expected_openmap, board.openmap)
+
+    def test_opening_space_with_some_side_mines(self):
+        #  H  M  M  M  1  x  x  x
+        #  1  2  3  2  1  x  x  x
+        #  x  x  x  x  x  x  x  x
+        # The top left corner isn't reachable from the open space, so it shouldn't be opened
         board = Board(beginner, [1, 2, 3], [])
         self.assertEqual(0, board.adjacent_mine_count(5))
 
         board = board.open(5)
-        expected_openmap = set((i for i in range(5, 64))).difference([4, 8, 9, 10, 11, 12])
+        expected_openmap = set((i for i in range(64))).difference([0, 1, 2, 3])
         self.assertCountEqual(expected_openmap, board.openmap)
 
     def test_flagging_a_position_adds_it_to_the_flagmap_or_removes_it_if_its_already_inside(self):
