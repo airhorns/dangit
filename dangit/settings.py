@@ -143,6 +143,3 @@ WEBPACK_LOADER = {
 GRAPHENE = {
     'SCHEMA': 'dangit.schema.schema'
 }
-
-import django_heroku
-django_heroku.settings(locals())
