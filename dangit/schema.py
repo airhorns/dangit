@@ -7,7 +7,7 @@ class Query(minesweeper.schema.Query, account.schema.Query, graphene.ObjectType)
     pass
 
 
-class Mutation(minesweeper.schema.Mutation, account.schema.Query, graphene.ObjectType):
+class Mutation(minesweeper.schema.Mutation, account.schema.Mutation, graphene.ObjectType):
     pass
 
 
