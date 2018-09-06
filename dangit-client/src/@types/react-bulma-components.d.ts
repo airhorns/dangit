@@ -87,7 +87,7 @@ export class Image {
 
 }
 
-export class Modal {
+export class Modal extends React.PureComponent {
     constructor(...args: any[]);
 
     componentDidMount(): void;
