@@ -4,7 +4,7 @@ Minesweeper clone for fun, and to demonstrate React & Django proficiency!
 
 ### Using the app
 
-It's live at http://dangit-prod.herokuapp.com.
+It's live at http://dangit-prod.herokuapp.com. Still some bugs.
 
 ### Exploring the code
 
