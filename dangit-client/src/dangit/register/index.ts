@@ -1,2 +1,3 @@
 export { Register } from "./register";
-export { LoginRegisterModal } from "./login_register_modal";
+export { LoginModal } from "./login_modal";
+export { LogoutButton } from "./logout_button";

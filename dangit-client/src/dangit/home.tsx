@@ -3,8 +3,8 @@ import gql from "graphql-tag";
 import { Link } from "react-router-dom";
 import { Section, Container, Heading, Button, Icon, Level } from "react-bulma-components";
 import { QuickQuery } from "../quick_graphql";
-import { ModalButton, Modal } from "./modal_button";
-import { LoginRegisterModal } from "./register";
+import { ModalButton } from "./modal_button";
+import { LoginModal } from "./register";
 
 const GET_USER_AND_STATS = gql`
 query getUserAndStats {
@@ -32,7 +32,7 @@ export class Home extends React.Component<{}, {}> {
                   return <React.Fragment>
                     <Level.Item>
                       <ModalButton size="large" color="info" text="Sign Up / Log In">
-                        <LoginRegisterModal/>
+                        {(modal) => <LoginModal modal={modal}/>}
                       </ModalButton>
                     </Level.Item>
                     <Level.Item>

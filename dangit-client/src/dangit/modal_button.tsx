@@ -5,8 +5,11 @@ export { Modal } from "react-bulma-components";
 export interface IModalButtonProps {
   size?: string;
   color?: string;
+  renderAsLink?: boolean;
   text: string;
+  className?: string;
   modalProps?: any;
+  children: (modalComponent: ModalButton) => void;
 }
 
 export interface IModalButtonState {
@@ -26,9 +29,10 @@ export class ModalButton extends React.Component<IModalButtonProps, IModalButton
 
   public render() {
     return <React.Fragment>
-      <Button onClick={this.open} size={this.props.size} color={this.props.color}>{this.props.text}</Button>
+      {this.props.renderAsLink || <Button onClick={this.open} size={this.props.size} color={this.props.color} className={this.props.className}>{this.props.text}</Button>}
+      {this.props.renderAsLink && <a onClick={this.open} className={this.props.className}>{this.props.text}</a>}
       <Modal show={this.state.show} onClose={this.close} {...this.props.modalProps}>
-        {this.props.children}
+        {this.props.children(this)}
       </Modal>
     </React.Fragment>;
   }

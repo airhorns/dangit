@@ -47,7 +47,7 @@ export class NewGameMenu extends React.Component<{}, {}> {
           {(startGame, data?) => {
             if (data) {
               if (data.startGame.ok) {
-                return <Redirect to={`/game/${data.startGame.gameState.id}`}/>;
+                return <Redirect push to={`/game/${data.startGame.gameState.id}`}/>;
               } else {
                 return <Error text="We're unable to start new games right now."/>;
               }
