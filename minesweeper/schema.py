@@ -98,8 +98,8 @@ class MakeMove(graphene.Mutation):
 
 
 class Query(object):
-    game_state = graphene.Field(GameStateType, id=graphene.Int())
-    all_game_states = graphene.List(GameStateType)
+    game_state = graphene.Field(GameStateType, id=graphene.Int(), description="Retrieve a gamestate by ID.")
+    all_game_states = graphene.List(GameStateType, description="Retrieve all gamestates for the currently logged in user, if there is one.")
 
     def resolve_all_game_states(self, info):
         return GameState.objects.all()
@@ -109,5 +109,5 @@ class Query(object):
 
 
 class Mutation(object):
-    start_game = StartGame.Field()
-    make_move = MakeMove.Field()
+    start_game = StartGame.Field(description="Start a new minesweeper game.")
+    make_move = MakeMove.Field(description="Make a move in an existing, open minesweeper game.")
