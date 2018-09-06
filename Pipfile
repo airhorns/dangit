@@ -9,6 +9,8 @@ graphene-django = "==2.1.0"
 django-webpack-loader = "==0.6.0"
 Django = "==2.1.1"
 "psycopg2" = "*"
+"django_heroku" = "*"
+gunicorn = "*"
 
 [dev-packages]
 pycodestyle = "==2.3.1"
