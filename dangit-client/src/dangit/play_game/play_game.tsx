@@ -121,6 +121,9 @@ export class PlayGame extends React.Component<IPlayGameProps, IPlayGameState> {
             </Mutation>;
             }}
           </QuickQuery>
+        <Box>
+          <p>Instructions: Left click to open a cell, right click to mark it as a mine. Don't open a mine, or the game is over!</p>
+        </Box>
         </Container>
       </Section>
     </DocumentTitle>;
